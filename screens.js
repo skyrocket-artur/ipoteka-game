@@ -488,18 +488,16 @@ SCREENS.invest = (el) => {
     <h3>На вашу переплату можно купить</h3>
     <div class="stats three" id="things"></div>
     <p class="tiny">Цены 2026 года: ${D.things.filter(t => t.p).map(t => t.t + ' — ' + M(t.p)).join(', ')}; аренда такой квартиры — ${R(Mdl.rentNow(d.cashPrice))} в месяц.</p>
-    <h3 style="margin-top:22px">Если бы вы откладывали свой платёж под ту же ставку</h3>
-    <p class="soft small">${yrs(d.months / 12)} каждый месяц кладёте сумму платежа под ставку, равную ставке ипотеки. По сути, так зарабатывает банк на заёмщиках.</p>
-    <div class="tbl-wrap"><table><thead><tr><th>Ставка</th><th>Деньги ×2 за</th><th>Накопили бы</th><th>Реальная ставка*</th></tr></thead><tbody>
+    <h3 style="margin-top:22px">Ставка глазами инвестора</h3>
+    <p class="soft small">Банк зарабатывает на вашей ипотеке ровно столько, сколько вы заработали бы на вкладе под ту же ставку. Но есть третий участник — инфляция: каждый год она «списывает» часть долга. Возьмём каждый 1 000 000 ₽ долга и один год.</p>
+    <div class="tbl-wrap"><table class="wrap-last"><thead><tr><th>Ставка</th><th>Проценты<br>банку*</th><th>Инфляция<br>спишет</th><th>Реальная<br>цена</th></tr></thead><tbody>
     ${D.ladder.map(r => {
-      const pay = E.pmt(d.principal, r, d.months);
-      const fv = E.fvAnnuity(pay, r, d.months);
-      const real = (1 + r) / (1 + infl) - 1;
-      return `<tr class="${Math.abs(r - d.rate) < 0.015 ? 'hl' : ''}"><td>${P(r, 0)}</td><td>${yrs(Math.round(E.doubling(r) * 10) / 10)}</td><td>${M(fv)}</td><td class="${real < 0 ? 'good' : ''}">${real > 0 ? '+' : ''}${P(real, 1)}</td></tr>`;
+      const net = (r - infl) * 1e6;
+      return `<tr class="${D.ladder.reduce((b, x) => Math.abs(x - d.rate) < Math.abs(b - d.rate) ? x : b) === r ? 'hl' : ''}"><td>${P(r, 0)}</td><td>${M(r * 1e6)}</td><td>−${M(infl * 1e6)}</td><td>${net < 0 ? `<span class="good">выгода ${M(-net)}</span>` : M(net)}</td></tr>`;
     }).join('')}
     </tbody></table></div>
-    <p class="tiny">* Ставка за вычетом инфляции ${P(infl, 0)} в год (базовый сценарий игры: цель ЦБ — 4%, в среднем за 2011–2025 годы было ${P(D.infl.avg15, 1)}). Зелёным — ставки ниже инфляции: такой долг обесценивается быстрее, чем растут проценты.</p>
-    <div class="card"><p class="small" style="margin:0"><b>Почему так много?</b> Сложный процент. Под 20% деньги удваиваются каждые 3,8 года — за 30 лет это ×240. Но ни один честный инструмент не даёт 20% годовых 30 лет подряд: вклады идут за ключевой ставкой, а ЦБ прогнозирует её снижение до 7,5–8,5% к 2029 году. Зато ипотека под 20% «берёт» с вас эти 20% каждый год, пока вы её не погасили.</p></div>
+    <p class="tiny">* Столько же принёс бы вам вклад в 1 млн ₽ под эту ставку. Инфляция — ${P(infl, 0)} в год (базовый сценарий игры: цель ЦБ — 4%, в среднем за 2011–2025 годы было ${P(D.infl.avg15, 1)}).</p>
+    <div class="card gold" id="mydebt"></div>
     <div id="q5"></div>
     <div id="concl"></div>`;
   const th = $('#things', el);
@@ -507,6 +505,26 @@ SCREENS.invest = (el) => {
     const n = over / (t.p || Mdl.rentNow(d.cashPrice) * 12);
     return stat(`${t.ic} ${t.t}`, n >= 10 ? nf0.format(Math.floor(n)) : X(n), t.unit(n));
   }).join('');
+
+  /* --- ваш долг глазами инвестора --- */
+  (() => {
+    const y1 = s.rows.slice(0, 12);
+    const int1 = y1.reduce((a, r) => a + r.interest, 0);
+    const avgBal = y1.reduce((a, r) => a + r.bal, 0) / Math.max(1, y1.length);
+    const eros = avgBal * infl;
+    const net = int1 - eros;
+    const depN = D.deposit.now * 0.87;
+    const verdict = d.rate < infl
+      ? `<b class="good">Долг работает на вас.</b> Инфляция списывает больше, чем вы платите банку. Досрочно не гасите — копите и инвестируйте.`
+      : d.rate < depN
+        ? `<b class="good">Долг почти бесплатный.</b> Вклад сейчас даёт ${P(depN, 1)} после налога — больше вашей ставки, так что свободные деньги выгоднее держать на вкладе. Когда ставки по вкладам опустятся ниже ${P(d.rate, 1)}, переключайтесь на досрочку.`
+        : `<b class="bad">Долг дорогой.</b> Каждый досрочный рубль «приносит» ${P(d.rate, 1)} без налога и риска — больше, чем вклад (${P(depN, 1)} после налога). Гасите досрочно, сокращая срок, и следите за рефинансированием.`;
+    $('#mydebt', el).innerHTML = `<h3>Ваш долг ${M(d.principal)} под ${P(d.rate, 1)}</h3>
+      <div class="kv"><span>Проценты банку за первый год</span><span>${M(int1)}</span>
+      <span>Инфляция спишет с долга</span><span>−${M(eros)}</span>
+      <span>Реальная цена долга</span><span>${net < 0 ? `выгода ${M(-net)} в год` : `${M(net)} в год · ${R(net / 12)}/мес`}</span></div>
+      <p class="small" style="margin:0">${verdict}</p>`;
+  })();
 
   /* --- тест 5: досрочка или вклад --- */
   const dep = D.deposit.now;

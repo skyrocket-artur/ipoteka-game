@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../fonts.css">
+<style>
+html,body{margin:0;width:1200px;height:630px;background:#161311;overflow:hidden}
+.w{position:relative;width:1200px;height:630px;box-sizing:border-box;padding:64px 72px;font-family:"Golos Text",sans-serif;color:#DED8CC;
+background:radial-gradient(900px 500px at 85% 20%,rgba(227,169,75,.16),transparent 60%),#161311}
+.k{font-weight:700;font-size:22px;letter-spacing:.12em;text-transform:uppercase;color:#E3A94B;display:flex;align-items:center;gap:14px}
+.k i{display:inline-block;width:36px;height:2px;background:rgba(227,169,75,.6)}
+h1{font-family:"Unbounded",sans-serif;font-weight:800;font-size:74px;line-height:1.02;color:#FBF7EF;margin:26px 0 22px;letter-spacing:-.01em}
+p{font-size:30px;line-height:1.35;margin:0;max-width:640px;color:#DED8CC}
+.chips{position:absolute;left:72px;bottom:58px;display:flex;gap:12px}
+.chips span{font-size:21px;font-weight:600;padding:10px 18px;border-radius:99px;border:1.5px solid rgba(235,216,184,.22);color:#FBF7EF;background:#1E1A16}
+.a{position:absolute;right:72px;top:62px;font-size:23px;color:#9E948A;text-align:right}
+.a b{color:#E3A94B;font-weight:700}
+svg{position:absolute;right:60px;bottom:120px}
+</style></head><body><div class="w">
+<div class="k"><i></i>Игра-калькулятор · 15 минут</div>
+<h1>Ипотека<br>без иллюзий</h1>
+<p>Реальная переплата, скрытые платежи<br>и честный ответ: брать или нет</p>
+<div class="chips"><span>Ставки на октябрь 2026</span><span>8 тестов</span><span>План погашения</span></div>
+<div class="a">Артур Юнусов · <b>t.me/YunusovArtur</b></div>
+<svg width="400" height="233" viewBox="0 0 360 210" aria-hidden="true">
+<path d="M14 150 C70 140 96 118 140 112 S220 74 262 58 S320 30 346 22" fill="none" stroke="#E3A94B" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 6" opacity=".6"/>
+<circle cx="346" cy="22" r="6" fill="#E3A94B"/>
+<g id="b"></g>
+<path d="M0 200 H360" stroke="rgba(235,216,184,.25)"/>
+</svg>
+<script>
+const g=document.getElementById('b');let s='';
+[[30,96,70,104],[112,56,82,144],[206,84,64,116],[282,112,54,88]].forEach(([x,y,w,h],b)=>{
+s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="#2A2420" stroke="rgba(235,216,184,.16)"/>`;
+const cols=Math.floor((w-10)/14),rows=Math.floor((h-14)/16);
+for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const lit=((r*7+c*3+b*5)%9)<3;s+=`<rect x="${x+8+c*14}" y="${y+10+r*16}" width="8" height="9" rx="1.5" fill="${lit?'#E3A94B':'#362F29'}"/>`;}
+});g.innerHTML=s;
+</script>
+</div></body></html>

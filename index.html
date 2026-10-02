@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#161311">
+<meta name="author" content="Артур Юнусов">
+<meta name="description" content="Игра-калькулятор про ипотеку в России: реальная переплата, скрытые платежи, льготные и рыночные ставки, ипотека против аренды и инвестиций, план досрочного погашения. Автор — Артур Юнусов.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ипотека без иллюзий — проживите 30 лет ипотеки за 15 минут">
+<meta property="og:description" content="Сколько вы на самом деле переплатите, где банки и застройщики прячут деньги и стоит ли вообще брать ипотеку. Игра-калькулятор Артура Юнусова.">
+<meta property="og:image" content="https://skyrocket-artur.github.io/ipoteka-game/img/og.png">
+<meta property="og:url" content="https://skyrocket-artur.github.io/ipoteka-game/">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Ипотека без иллюзий — игра-калькулятор</title>
+<link rel="preload" href="fonts/GolosText-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Unbounded-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#" id="logo" aria-label="Ипотека без иллюзий — в начало"></a>
+    <a class="tg" href="https://t.me/YunusovArtur" target="_blank" rel="noopener" id="tgTop"></a>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+<main><div class="wrap" id="app"></div></main>
+<footer class="foot"><div class="wrap" id="foot"></div></footer>
+<script src="data.js"></script>
+<script src="engine.js"></script>
+<script src="charts.js"></script>
+<script src="ui.js"></script>
+<script src="model.js"></script>
+<script src="screens.js"></script>
+<script src="screens-life.js"></script>
+<script>boot();</script>
+</body>
+</html>

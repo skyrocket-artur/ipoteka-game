@@ -15,7 +15,7 @@ const CONFIG = {
   storageKey: 'ipoteka_bez_illuziy_v1',
 };
 
-const tg = (window.Telegram && window.Telegram.WebApp) || null;
+let tg = null;   // Telegram.WebApp — определяется в boot(), когда SDK уже загружен
 const app = document.getElementById('app');
 
 /* ---------- форматирование ---------- */
@@ -226,13 +226,12 @@ function openUrl(url) {
 }
 
 function share() {
-  const url = location.href.split('#')[0];
-  const text = CONFIG.shareText + '\n' + url;
-  openUrl(`https://t.me/share/url?url=${encodeURIComponent(CONFIG.shareBotUrl)}&text=${encodeURIComponent(text)}`);
+  openUrl(`https://t.me/share/url?url=${encodeURIComponent(CONFIG.shareBotUrl)}&text=${encodeURIComponent(CONFIG.shareText)}`);
 }
 
 /* ---------- старт ---------- */
 function boot() {
+  tg = (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) ? window.Telegram.WebApp : null;
   load();
   chrome();
   if (tg) {

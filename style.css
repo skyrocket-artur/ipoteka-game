@@ -225,6 +225,7 @@ th:first-child, td:first-child { text-align: left; }
 th { color: var(--tx-soft); font-weight: 600; font-size: 12.5px; background: var(--ink2); }
 tr:last-child td { border-bottom: 0; }
 table.wrap-last td:last-child { white-space: normal; }
+table.wrap-all td { white-space: normal; }
 table.wrap-last th { white-space: normal; vertical-align: bottom; line-height: 1.25; }
 tr.hl td { background: var(--gold-soft); color: var(--tx-bright); }
 

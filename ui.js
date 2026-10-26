@@ -11,6 +11,8 @@ const CONFIG = {
   // Финал: кнопка бота (ChatPlace: /start ipoteka) и «Посоветовать другу» (/start ipoteka_share)
   botUrl: 'https://t.me/YunusovArtur_bot?start=ipoteka',
   shareBotUrl: 'https://t.me/YunusovArtur_bot?start=ipoteka_share',
+  nextUrl: 'https://t.me/YunusovArtur_bot?start=game',
+  skyUrl: 'https://t.me/YunusovArtur_bot?start=skyrocket_ipoteka',
   shareText: 'Прошёл игру «Ипотека без иллюзий»: узнал реальную переплату и как закрыть ипотеку быстрее. Проверь свою — 15 минут 👇',
   storageKey: 'ipoteka_bez_illuziy_v1',
 };

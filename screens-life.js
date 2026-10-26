@@ -631,6 +631,8 @@ SCREENS.final = (el) => {
       <span>Ипотека против аренды с инвестициями</span><span>${buyerWins ? 'ипотека выгоднее' : 'аренда выгоднее'} на ${M(Math.abs(L.buyer - L.renter))}</span>
       <span>Как закрыть быстрее</span><span>${planM < T ? `за ${ym(planM)}, экономия ${M(over - planOver)}` : 'добавьте доплату в плане'}</span>
     </div></div>
+    <div class="card gold"><h3>🎮 Следующий уровень (4 из 7) — «Инвест-старт»</h3><p class="small">Проживите 20 лет на фондовом рынке за 5 минут: кризисы, обвалы и бумы. Получится обогнать ленивого инвестора?</p>
+      <div class="btns"><button class="btn" data-act="next">Играть в «Инвест-старт» 🎮</button><button class="btn tg-btn" data-act="sky">Узнать про закрытый канал 🔒</button></div></div>
     <div class="card gold"><h3>Если вам понравилась игра</h3><p class="small">Отправьте её тем, кто сейчас выбирает квартиру или платит ипотеку. Пятнадцать минут здесь могут сэкономить им миллионы.</p>
       <div class="btns"><button class="btn tg-btn" data-act="share">${IC.tg} Отправить другу в Telegram</button><button class="btn ghost" data-act="copy">Скопировать ссылку на бота</button></div></div>
     <div class="author-card"><img src="img/author.jpg" alt="${CONFIG.author}" loading="lazy"><div><div class="an">${CONFIG.author}</div><p>${CONFIG.authorBio} В канале — разборы рынка, ставок и личных финансов без воды.</p></div></div>
@@ -657,6 +659,8 @@ SCREENS.final = (el) => {
     const t = CONFIG.shareBotUrl;
     (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { e.target.textContent = 'Ссылка скопирована ✓'; }).catch(() => { prompt('Скопируйте ссылку:', t); });
   };
+  $('[data-act=next]', el).onclick = () => openUrl(CONFIG.nextUrl);
+  $('[data-act=sky]', el).onclick = () => openUrl(CONFIG.skyUrl);
   $('[data-act=channel]', el).onclick = () => openUrl(CONFIG.channelUrl);
   $('[data-act=bot]', el).onclick = () => openUrl(CONFIG.botUrl);
   $('[data-act=again]', el).onclick = () => { const keep = { stage: S.stage }; S = S0(); S.stage = keep.stage; save(); go('q-stage'); };
